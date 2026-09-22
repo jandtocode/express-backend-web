@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  data_base:
+    container_name: postgres-express
+    image: postgres:16-alpine
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
+
+volumes:
+  postgres-db:
+    driver: local
