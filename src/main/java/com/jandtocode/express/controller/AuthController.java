@@ -2,10 +2,8 @@ package com.jandtocode.express.controller;
 
 import com.jandtocode.express.dto.request.LoginRequest;
 import com.jandtocode.express.dto.response.LoginResponse;
-import com.jandtocode.express.repository.UserRepository;
 import com.jandtocode.express.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,12 +17,8 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-
         LoginResponse response = authService.login(
                 loginRequest.getIdentification(),
                 loginRequest.getPassword()

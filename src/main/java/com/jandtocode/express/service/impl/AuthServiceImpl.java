@@ -3,8 +3,11 @@ package com.jandtocode.express.service.impl;
 import com.jandtocode.express.dto.response.LoginResponse;
 import com.jandtocode.express.repository.UserRepository;
 import com.jandtocode.express.service.AuthService;
+import com.jandtocode.express.util.LoginUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.Map;
 
 @Service
@@ -18,18 +21,21 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse login(String identification, String password) {
 
-        // Primera validación: campos vacíos
-        if (identification == null || identification.isEmpty() ||
-                password == null || password.isEmpty()) {
-            return new LoginResponse(false, "Identificación y contraseña son requeridas", null, null);
+        // Validar campos vacíos
+        if (identification == null || identification.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, LoginUtils.IDENTIFICATION_REQUIRED);
         }
 
-        // Busca credenciales en BD
+        if (password == null || password.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, LoginUtils.PASSWORD_REQUIRED);
+        }
+
+        // Buscar usuario
         Map<String, String> credentials = userRepository.findCredentialsByIdentification(identification);
 
         // Usuario no existe
         if (credentials == null) {
-            return new LoginResponse(false, "Identificación o contraseña incorrecta", null, null);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, LoginUtils.INVALID_CREDENTIALS);
         }
 
         // Extrae datos
@@ -38,22 +44,22 @@ public class AuthServiceImpl implements AuthService {
         Boolean isBlocked = Boolean.parseBoolean(credentials.get("isBlocked"));
         Integer failedAttempts = Integer.parseInt(credentials.get("failedAttempts"));
 
-        // Usuario bloqueado
+        // Validar si está bloqueado
         if (isBlocked) {
-            return new LoginResponse(false, "Usuario bloqueado. Contacte con el administrador", null, null);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, LoginUtils.USER_BLOCKED);
         }
 
-        // Contraseña incorrecta
+        // Validar contraseña
         if (!storedPassword.equals(password)) {
             failedAttempts++;
             userRepository.updateFailedAttempts(userId, failedAttempts);
 
             if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
                 userRepository.blockUser(userId);
-                return new LoginResponse(false, "Usuario bloqueado. Contacte con el administrador", null, null);
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, LoginUtils.USER_BLOCKED);
             }
 
-            return new LoginResponse(false, "Identificación o contraseña incorrecta", null, null);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, LoginUtils.INVALID_CREDENTIALS);
         }
 
         // Login exitoso

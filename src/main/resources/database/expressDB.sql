@@ -18,6 +18,9 @@ CREATE DATABASE "expressDB"
 -- ============================================
 -- TABLA: USER_EXPRESS (Usuario)
 -- ============================================
+
+DROP TABLE "user_express";
+
 CREATE TABLE "user_express" (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -59,4 +62,11 @@ INSERT INTO "user_express" (name, last_name, identification, password, failed_at
 VALUES
     ('Juan', 'Pérez', '123456789', 'password123', 0, false),
     ('María', 'García', '987654321', 'password456', 0, false),
-    ('Carlos', 'López', '555666777', 'password789', 0, false);
+    ('Carlos', 'López', '555666777', 'password789', 2, false),
+    ('Pedro', 'Martínez', '111222333', 'password000', 3, true);
+
+-- Eliminar todos los registros de user_express
+DELETE FROM "user_express";
+
+-- Resetear el ID (sequence)
+ALTER SEQUENCE user_express_id_seq RESTART WITH 1;
