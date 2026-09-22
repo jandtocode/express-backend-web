@@ -5,14 +5,16 @@ public class LoginResponse {
     private String message;
     private String name;
     private String lastName;
+    private Integer userId;
 
     public LoginResponse() {}
 
-    public LoginResponse(Boolean success, String message, String name, String lastName) {
+    public LoginResponse(Boolean success, String message, String name, String lastName, Integer userId) {
         this.success = success;
         this.message = message;
         this.name = name;
         this.lastName = lastName;
+        this.userId = userId;
     }
 
     public Boolean getSuccess() {
@@ -45,5 +47,13 @@ public class LoginResponse {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
         // Extrae datos
         Integer userId = Integer.parseInt(credentials.get("id"));
         String storedPassword = credentials.get("password");
-        Boolean isBlocked = Boolean.parseBoolean(credentials.get("isBlocked"));
+        boolean isBlocked = Boolean.parseBoolean(credentials.get("isBlocked"));
         Integer failedAttempts = Integer.parseInt(credentials.get("failedAttempts"));
 
         // Validar si está bloqueado
@@ -66,9 +66,10 @@ public class AuthServiceImpl implements AuthService {
         userRepository.resetFailedAttempts(userId);
         return new LoginResponse(
                 true,
-                "Login exitoso",
+                LoginUtils.SUCCESS_LOGIN,
                 credentials.get("name"),
-                credentials.get("lastName")
+                credentials.get("lastName"),
+                userId
         );
     }
 }
