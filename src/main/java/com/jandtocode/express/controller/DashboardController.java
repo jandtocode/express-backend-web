@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/dashboard")
+@RequestMapping("/api")
 public class DashboardController {
 
-    @GetMapping
+    @GetMapping("/dashboard")
     public ResponseEntity<String> getDashboard(HttpSession session) {
 
         Integer userId = (Integer) session.getAttribute("userId");
