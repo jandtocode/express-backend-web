@@ -1,9 +1,12 @@
 package com.jandtocode.express.controller;
 
 import com.jandtocode.express.dto.request.LoginRequest;
+import com.jandtocode.express.dto.request.RegisterUserRequest;
 import com.jandtocode.express.dto.response.LoginResponse;
+import com.jandtocode.express.dto.response.RegisterUserResponse;
 import com.jandtocode.express.service.AuthService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +31,18 @@ public class AuthController {
         // Guardar userId en sesión
         session.setAttribute("userId", response.getUserId());
 
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<RegisterUserResponse> register(@Valid @RequestBody RegisterUserRequest request) {
+        RegisterUserResponse response = authService.register(
+                request.getName(),
+                request.getLastName(),
+                request.getIdentification(),
+                request.getPassword(),
+                request.getConfirmPassword()
+        );
         return ResponseEntity.ok(response);
     }
 

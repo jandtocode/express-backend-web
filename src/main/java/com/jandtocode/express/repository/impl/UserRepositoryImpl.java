@@ -17,20 +17,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Autowired
     private EntityManager entityManager;
 
-    @Override
-    @Transactional
-    public Integer getFailedAttempts(String identification) {
-
-        try {
-            Query query = entityManager.createQuery(
-                    "SELECT u.failedAttempts FROM User u WHERE u.identification = :identification"
-            );
-            query.setParameter("identification", identification);
-            return (Integer) query.getSingleResult();
-        } catch (NoResultException e) {
-            return 0;
-        }
-    }
 
     @Override
     @Transactional
