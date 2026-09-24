@@ -3,17 +3,13 @@ package com.jandtocode.express.dto.response;
 public class LoginResponse {
     private Boolean success;
     private String message;
-    private String name;
-    private String lastName;
     private Integer userId;
 
     public LoginResponse() {}
 
-    public LoginResponse(Boolean success, String message, String name, String lastName, Integer userId) {
+    public LoginResponse(Boolean success, String message, Integer userId) {
         this.success = success;
         this.message = message;
-        this.name = name;
-        this.lastName = lastName;
         this.userId = userId;
     }
 
@@ -31,22 +27,6 @@ public class LoginResponse {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public Integer getUserId() {

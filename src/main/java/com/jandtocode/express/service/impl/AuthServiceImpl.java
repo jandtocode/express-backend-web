@@ -73,8 +73,6 @@ public class AuthServiceImpl implements AuthService {
         return new LoginResponse(
                 true,
                 UserUtils.SUCCESS,
-                credentials.get("name"),
-                credentials.get("lastName"),
                 userId
         );
     }
