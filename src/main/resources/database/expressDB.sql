@@ -56,17 +56,28 @@ CREATE INDEX idx_user_express_is_blocked ON "user_express"(is_blocked);
 CREATE INDEX idx_balance_info_user_id ON "balance_info"(user_id);
 
 -- ============================================
--- INSERTAR 3 USUARIOS DE PRUEBA
+-- INSERTAR 5 USUARIOS DE PRUEBA
 -- ============================================
-INSERT INTO "user_express" (name, last_name, identification, password, failed_attempts, is_blocked)
-VALUES
-    ('Juan', 'Pérez', '123456789', 'password123', 0, false),
-    ('María', 'García', '987654321', 'password456', 0, false),
-    ('Carlos', 'López', '555666777', 'password789', 2, false),
-    ('Pedro', 'Martínez', '111222333', 'password000', 3, true);
+-- Insertar usuarios en user_express
+INSERT INTO "user_express" (name, last_name, identification, password, failed_attempts, is_blocked) VALUES
+('Juan', 'Perez', '1001', 'pass123', 0, false),
+('Maria', 'Garcia', '1002', 'pass123', 0, false),
+('Carlos', 'Lopez', '1003', 'pass123', 0, false),
+('Ana', 'Martinez', '1004', 'pass123', 0, false),
+('Luis', 'Rodriguez', '1005', 'pass123', 0, false);
+
+-- Insertar saldos en balance_info
+INSERT INTO "balance_info" (user_id, current_balance, accumulated_recharges, last_recharge) VALUES
+(1, 15000.50, 10, '2024-09-20'),
+(2, 0.00, 0, NULL),
+(3, 5234.75, 8, '2024-09-18'),
+(4, 8999.25, 12, '2024-09-19'),
+(5, 3450.00, 5, '2024-09-17');
 
 -- Eliminar todos los registros de user_express
 DELETE FROM "user_express";
+DELETE FROM "balance_info";
 
 -- Resetear el ID (sequence)
 ALTER SEQUENCE user_express_id_seq RESTART WITH 1;
+ALTER SEQUENCE balance_info_id_seq RESTART WITH 1;

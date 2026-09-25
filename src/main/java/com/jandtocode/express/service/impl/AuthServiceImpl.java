@@ -6,7 +6,7 @@ import com.jandtocode.express.entity.User;
 import com.jandtocode.express.repository.RegisterUserRepository;
 import com.jandtocode.express.repository.UserRepository;
 import com.jandtocode.express.service.AuthService;
-import com.jandtocode.express.util.UserUtils;
+import com.jandtocode.express.util.GeneralUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,11 +29,11 @@ public class AuthServiceImpl implements AuthService {
 
         // Validar campos vacíos
         if (identification == null || identification.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, UserUtils.IDENTIFICATION_REQUIRED);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, GeneralUtils.IDENTIFICATION_REQUIRED);
         }
 
         if (password == null || password.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, UserUtils.PASSWORD_REQUIRED);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, GeneralUtils.PASSWORD_REQUIRED);
         }
 
         // Buscar usuario
@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
 
         // Usuario no existe
         if (credentials == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, UserUtils.INVALID_CREDENTIALS);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, GeneralUtils.INVALID_CREDENTIALS);
         }
 
         // Extrae datos
@@ -52,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
 
         // Validar si está bloqueado
         if (isBlocked) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, UserUtils.USER_BLOCKED);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, GeneralUtils.USER_BLOCKED);
         }
 
         // Validar contraseña
@@ -62,17 +62,17 @@ public class AuthServiceImpl implements AuthService {
 
             if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
                 userRepository.blockUser(userId);
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, UserUtils.USER_BLOCKED);
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, GeneralUtils.USER_BLOCKED);
             }
 
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, UserUtils.INVALID_CREDENTIALS);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, GeneralUtils.INVALID_CREDENTIALS);
         }
 
         // Login exitoso
         userRepository.resetFailedAttempts(userId);
         return new LoginResponse(
                 true,
-                UserUtils.SUCCESS,
+                GeneralUtils.SUCCESS,
                 userId
         );
     }
@@ -83,37 +83,37 @@ public class AuthServiceImpl implements AuthService {
 
         // Validar que nombre no esté vacío
         if (name == null || name.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, UserUtils.NAME_REQUIRED);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, GeneralUtils.NAME_REQUIRED);
         }
 
         // Validar que apellido no esté vacío
         if (lastName == null || lastName.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, UserUtils.LASTNAME_REQUIRED);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, GeneralUtils.LASTNAME_REQUIRED);
         }
 
         // Validar que identificación no esté vacía
         if (identification == null || identification.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, UserUtils.IDENTIFICATION_REQUIRED);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, GeneralUtils.IDENTIFICATION_REQUIRED);
         }
 
         // Validar que password no esté vacío
         if (password == null || password.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, UserUtils.PASSWORD_REQUIRED);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, GeneralUtils.PASSWORD_REQUIRED);
         }
 
         // Validar que confirmPassword no esté vacío
         if (confirmPassword == null || confirmPassword.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, UserUtils.CONFIRM_PASSWORD_REQUIRED);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, GeneralUtils.CONFIRM_PASSWORD_REQUIRED);
         }
 
         // Validar que la identificación no esté duplicada en BD
         if (registerUserRepository.existsByIdentification(identification)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, UserUtils.DUPLICATE_IDENTIFICATION);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, GeneralUtils.DUPLICATE_IDENTIFICATION);
         }
 
         // Validar que password y confirmPassword coincidan
         if (!password.equals(confirmPassword)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, UserUtils.CHECK_DUPLICATE_PASSWORD);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, GeneralUtils.CHECK_DUPLICATE_PASSWORD);
         }
 
         // Crear nuevo usuario
@@ -125,7 +125,7 @@ public class AuthServiceImpl implements AuthService {
         // Retornar respuesta exitosa
         return new RegisterUserResponse(
                 true,
-                UserUtils.SUCCESS,
+                GeneralUtils.SUCCESS,
                 savedUser.getIdentification()
         );
     }
