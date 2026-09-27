@@ -6,8 +6,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "balance_info")
-public class Balance {
+@Table(name = "dashboard_info")
+public class Dashboard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,22 +26,44 @@ public class Balance {
     @Column(name = "last_recharge")
     private LocalDate lastRecharge;
 
+    @Column(name = "type_payment", length = 100)
+    private String typePayment;
+
+    @Column(name = "entity_payment", length = 100)
+    private String entityPayment;
+
+    @Column(name = "value_recharge")
+    private Double valueRecharge;
+
+    @Column(name = "apply_bonus")
+    private Boolean applyBonus;
+
+    @Column(name = "value_bonus")
+    private Double valueBonus;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public Balance() {
-    }
+    public Dashboard() {}
 
-    public Balance(User user, Double currentBalance, Integer accumulatedRecharges, LocalDate lastRecharge) {
+    public Dashboard(Long id, User user, Double currentBalance, Integer accumulatedRecharges, LocalDate lastRecharge,
+                     String typePayment, String entityPayment, Double valueRecharge, Boolean applyBonus,
+                     Double valueBonus, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
         this.user = user;
         this.currentBalance = currentBalance;
         this.accumulatedRecharges = accumulatedRecharges;
         this.lastRecharge = lastRecharge;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.typePayment = typePayment;
+        this.entityPayment = entityPayment;
+        this.valueRecharge = valueRecharge;
+        this.applyBonus = applyBonus;
+        this.valueBonus = valueBonus;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
@@ -82,6 +104,46 @@ public class Balance {
 
     public void setLastRecharge(LocalDate lastRecharge) {
         this.lastRecharge = lastRecharge;
+    }
+
+    public String getTypePayment() {
+        return typePayment;
+    }
+
+    public void setTypePayment(String typePayment) {
+        this.typePayment = typePayment;
+    }
+
+    public String getEntityPayment() {
+        return entityPayment;
+    }
+
+    public void setEntityPayment(String entityPayment) {
+        this.entityPayment = entityPayment;
+    }
+
+    public Double getValueRecharge() {
+        return valueRecharge;
+    }
+
+    public void setValueRecharge(Double valueRecharge) {
+        this.valueRecharge = valueRecharge;
+    }
+
+    public Boolean getApplyBonus() {
+        return applyBonus;
+    }
+
+    public void setApplyBonus(Boolean applyBonus) {
+        this.applyBonus = applyBonus;
+    }
+
+    public Double getValueBonus() {
+        return valueBonus;
+    }
+
+    public void setValueBonus(Double valueBonus) {
+        this.valueBonus = valueBonus;
     }
 
     public LocalDateTime getCreatedAt() {

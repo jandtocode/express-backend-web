@@ -20,8 +20,8 @@ public class BalanceUserRepositoryImpl implements BalanceUserRepository {
     public Map<String, Object> getBalanceInfoByUserId(Long userId) {
         try {
             Query query = entityManager.createQuery(
-                    "SELECT b.currentBalance, b.accumulatedRecharges, b.lastRecharge " +
-                            "FROM Balance b WHERE b.user.id = :userId"
+                    "SELECT d.currentBalance, d.accumulatedRecharges, d.lastRecharge " +
+                            "FROM Dashboard d WHERE d.user.id = :userId"
             );
             query.setParameter("userId", userId);
 
