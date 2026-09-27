@@ -122,6 +122,9 @@ public class AuthServiceImpl implements AuthService {
         // Guardar en BD
         User savedUser = registerUserRepository.save(user);
 
+        // Crear dashboard por defecto
+        registerUserRepository.createDashboardDefault(savedUser.getId());
+
         // Retornar respuesta exitosa
         return new RegisterUserResponse(
                 true,

@@ -1,5 +1,6 @@
 package com.jandtocode.express.repository.impl;
 
+import com.jandtocode.express.entity.Dashboard;
 import com.jandtocode.express.entity.User;
 import com.jandtocode.express.repository.RegisterUserRepository;
 import jakarta.persistence.EntityManager;
@@ -35,5 +36,20 @@ public class RegisterUserRepositoryImpl implements RegisterUserRepository {
         entityManager.flush();
 
         return user;
+    }
+
+    @Override
+    @Transactional
+    public Dashboard createDashboardDefault(Integer userId) {
+        String query = "INSERT INTO Dashboard d (d.user.id, d.currentBalance, d.accumulatedRecharges, d.lastRecharge, d.typePayment, d.entityPayment, d.valueRecharge, d.applyBonus, d.valueBonus) " +
+                "VALUES (:userId, 0.0, 0, CAST('1900-01-01' AS date), NULL, NULL, 0.0, false, 0.0)";
+
+        entityManager.createQuery(query)
+                .setParameter("userId", userId)
+                .executeUpdate();
+
+        entityManager.flush();
+
+        return null;
     }
 }
