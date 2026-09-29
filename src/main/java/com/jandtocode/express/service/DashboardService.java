@@ -12,5 +12,5 @@ public interface DashboardService {
     RechargeCardCalculateResponse CardCalculate(Long userId, String typePayment, String bank,
                                                 String name, String lastName, Double valueRecharge);
 
-    RechargeCardResponse completeRecharge(Long userId, int totalTrips, Double totalPayment, Double currentBalance);
+    RechargeCardResponse completeRecharge(Long userId);
 }

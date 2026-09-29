@@ -84,7 +84,7 @@ public class RechargeCardRepositoryImpl implements RechargeCardRepository {
     public void updateUserBalanceAfterRecharge(
             Integer userId,
             Double currentBalance,
-            Integer accumulatedRecharges) {
+            Integer accumulated_recharges) {
 
         entityManager.createQuery(
                         "UPDATE Dashboard d SET " +
@@ -95,7 +95,7 @@ public class RechargeCardRepositoryImpl implements RechargeCardRepository {
                                 "WHERE d.user.id = :userId"
                 )
                 .setParameter("currentBalance", currentBalance)
-                .setParameter("accumulatedRecharges", accumulatedRecharges)
+                .setParameter("accumulatedRecharges", accumulated_recharges)
                 .setParameter("userId", userId)
                 .executeUpdate();
     }

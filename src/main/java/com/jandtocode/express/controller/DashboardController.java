@@ -80,9 +80,8 @@ public class DashboardController {
     }
 
     @PatchMapping("/dashboard/recharge/final")
-    public ResponseEntity<RechargeCardResponse> updateInfoUserRecharge(
-            HttpSession session,
-            @RequestBody RechargeCardRequest request) {
+    public ResponseEntity<RechargeCardResponse> completeRecharge(
+            HttpSession session) {
 
         Integer userId = (Integer) session.getAttribute("userId");
 
@@ -105,12 +104,7 @@ public class DashboardController {
         }
 
         RechargeCardResponse response =
-                dashboardService.completeRecharge(
-                        userId.longValue(),
-                        request.getTotalTrips(),
-                        request.getTotalPayment(),
-                        request.getCurrentBalance()
-                );
+                dashboardService.completeRecharge(userId.longValue());
 
         session.removeAttribute("rechargeCalculated");
 

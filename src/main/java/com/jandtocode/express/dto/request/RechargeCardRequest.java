@@ -2,15 +2,15 @@ package com.jandtocode.express.dto.request;
 
 public class RechargeCardRequest {
     private Long userId;
-    private int totalTrips;
+    private int accumulateRecharges;
     private Double totalPayment;
     private Double currentBalance;
 
     public RechargeCardRequest(){}
 
-    public RechargeCardRequest(Long userId, int totalTrips, Double totalPayment, Double currentBalance) {
+    public RechargeCardRequest(Long userId, int accumulateRecharges, Double totalPayment, Double currentBalance) {
         this.userId = userId;
-        this.totalTrips = totalTrips;
+        this.accumulateRecharges = accumulateRecharges;
         this.totalPayment = totalPayment;
         this.currentBalance = currentBalance;
     }
@@ -23,12 +23,12 @@ public class RechargeCardRequest {
         this.userId = userId;
     }
 
-    public int getTotalTrips() {
-        return totalTrips;
+    public int getAccumulateRecharges() {
+        return accumulateRecharges;
     }
 
-    public void setTotalTrips(int totalTrips) {
-        this.totalTrips = totalTrips;
+    public void setAccumulateRecharges(int accumulateRecharges) {
+        this.accumulateRecharges = accumulateRecharges;
     }
 
     public Double getTotalPayment() {

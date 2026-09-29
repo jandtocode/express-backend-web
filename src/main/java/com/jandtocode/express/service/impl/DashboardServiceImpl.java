@@ -173,11 +173,7 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     @Transactional
-    public RechargeCardResponse completeRecharge(
-            Long userId,
-            int totalTrips,
-            Double totalPayment,
-            Double currentBalance) {
+    public RechargeCardResponse completeRecharge(Long userId) {
 
         Map<String, Object> userInfo =
                 rechargeCardRepository.getInfoByUserId(userId.intValue());
@@ -189,7 +185,7 @@ public class DashboardServiceImpl implements DashboardService {
             );
         }
 
-        double balanceBeforeRecharge =
+        double currentBalance =
                 ((Number) userInfo.get("currentBalance")).doubleValue();
 
         double valueRecharge =
@@ -204,7 +200,7 @@ public class DashboardServiceImpl implements DashboardService {
                 ((Number) userInfo.get("accumulatedRecharges")).intValue();
 
         double newCurrentBalance =
-                balanceBeforeRecharge + valueRecharge + valueBonus;
+                currentBalance + valueRecharge + valueBonus;
 
         int newAccumulatedRecharges =
                 accumulatedRecharges + 1;

@@ -9,5 +9,5 @@ public interface RechargeCardRepository {
     void saveRechargeCalculation(Integer userId, String type_payment, String entity_payment, Double value_recharge,
                                  Boolean apply_bonus, Double value_bonus);
 
-    void updateUserBalanceAfterRecharge(Integer userId, Double current_balance, Integer accumaled_recharges);
+    void updateUserBalanceAfterRecharge(Integer userId, Double current_balance, Integer accumulated_recharges);
 }

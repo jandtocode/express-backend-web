@@ -5,17 +5,17 @@ public class RechargeCardResponse {
     private String message;
     private Double currentBalance;
     private String lastRecharge;
-    private Integer totalTrips;
+    private Integer accumulateRecharges;
     private boolean applyBonus;
 
     public RechargeCardResponse(){}
 
-    public RechargeCardResponse(Boolean success, String message, Double currentBalance, String lastRecharge, Integer totalTrips, boolean applyBonus) {
+    public RechargeCardResponse(Boolean success, String message, Double currentBalance, String lastRecharge, Integer accumulateRecharges, boolean applyBonus) {
         this.success = success;
         this.message = message;
         this.currentBalance = currentBalance;
         this.lastRecharge = lastRecharge;
-        this.totalTrips = totalTrips;
+        this.accumulateRecharges = accumulateRecharges;
         this.applyBonus = applyBonus;
     }
 
@@ -51,12 +51,12 @@ public class RechargeCardResponse {
         this.lastRecharge = lastRecharge;
     }
 
-    public Integer getTotalTrips() {
-        return totalTrips;
+    public Integer getAccumulateRecharges() {
+        return accumulateRecharges;
     }
 
-    public void setTotalTrips(Integer totalTrips) {
-        this.totalTrips = totalTrips;
+    public void setAccumulateRecharges(Integer accumulateRecharges) {
+        this.accumulateRecharges = accumulateRecharges;
     }
 
     public boolean isApplyBonus() {
