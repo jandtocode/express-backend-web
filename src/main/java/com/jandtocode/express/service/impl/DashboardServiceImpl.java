@@ -3,6 +3,7 @@ package com.jandtocode.express.service.impl;
 import com.jandtocode.express.dto.response.BalanceUserResponse;
 import com.jandtocode.express.dto.response.DashboardDefaultResponse;
 import com.jandtocode.express.dto.response.RechargeCardCalculateResponse;
+import com.jandtocode.express.dto.response.RechargeCardResponse;
 import com.jandtocode.express.repository.BalanceUserRepository;
 import com.jandtocode.express.repository.RechargeCardRepository;
 import com.jandtocode.express.service.DashboardService;
@@ -69,8 +70,8 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     @Transactional
-    public RechargeCardCalculateResponse getInfoRechargeCardCalculate(Long userId, String typePayment, String bank,
-                                                                      String name, String lastName, Double valueRecharge) {
+    public RechargeCardCalculateResponse CardCalculate(Long userId, String typePayment, String bank,
+                                                       String name, String lastName, Double valueRecharge) {
 
         Map<String, Object> userInfo = rechargeCardRepository.getInfoByUserId(userId.intValue());
         Map<String, Object> requestUserInfo = new HashMap<>();
@@ -142,7 +143,7 @@ public class DashboardServiceImpl implements DashboardService {
         double totalToPay = valueRecharge + bonusValue;
 
         // Actualizar la información del usuario en el dashboard
-        rechargeCardRepository.updateUserInfoDashboard(
+        rechargeCardRepository.saveRechargeCalculation(
                 userId.intValue(),
                 typePayment,
                 bank,
@@ -167,6 +168,63 @@ public class DashboardServiceImpl implements DashboardService {
                 totalToPay,
                 bonusApplied,
                 bonusValue
+        );
+    }
+
+    @Override
+    @Transactional
+    public RechargeCardResponse completeRecharge(
+            Long userId,
+            int totalTrips,
+            Double totalPayment,
+            Double currentBalance) {
+
+        Map<String, Object> userInfo =
+                rechargeCardRepository.getInfoByUserId(userId.intValue());
+
+        if (userInfo == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    GeneralUtils.MSG_ERR_USER_NOT_FOUND
+            );
+        }
+
+        double balanceBeforeRecharge =
+                ((Number) userInfo.get("currentBalance")).doubleValue();
+
+        double valueRecharge =
+                ((Number) userInfo.get("valueRecharge")).doubleValue();
+
+        double valueBonus =
+                userInfo.get("valueBonus") != null
+                        ? ((Number) userInfo.get("valueBonus")).doubleValue()
+                        : 0.0;
+
+        int accumulatedRecharges =
+                ((Number) userInfo.get("accumulatedRecharges")).intValue();
+
+        double newCurrentBalance =
+                balanceBeforeRecharge + valueRecharge + valueBonus;
+
+        int newAccumulatedRecharges =
+                accumulatedRecharges + 1;
+
+        boolean applyBonus =
+                Boolean.TRUE.equals(userInfo.get("applyBonus"));
+
+        rechargeCardRepository.updateUserBalanceAfterRecharge(
+                userId.intValue(),
+                newCurrentBalance,
+                newAccumulatedRecharges
+        );
+
+        return new RechargeCardResponse(
+                true,
+                "Recarga realizada correctamente",
+                newCurrentBalance,
+                LocalDate.now().toString(),
+                newAccumulatedRecharges,
+                applyBonus
         );
     }
 }

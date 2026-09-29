@@ -57,7 +57,7 @@ public class RechargeCardRepositoryImpl implements RechargeCardRepository {
 
     @Override
     @Transactional
-    public void updateUserInfoDashboard(Integer userId, String type_payment, String entity_payment,
+    public void saveRechargeCalculation(Integer userId, String type_payment, String entity_payment,
                                         Double value_recharge, Boolean apply_bonus, Double value_bonus) {
 
         entityManager.createQuery(
@@ -81,17 +81,21 @@ public class RechargeCardRepositoryImpl implements RechargeCardRepository {
 
     @Override
     @Transactional
-    public void updateTravelsUser(Integer userId, Double current_balance, Integer accumulated_recharges) {
+    public void updateUserBalanceAfterRecharge(
+            Integer userId,
+            Double currentBalance,
+            Integer accumulatedRecharges) {
 
         entityManager.createQuery(
                         "UPDATE Dashboard d SET " +
                                 "d.currentBalance = :currentBalance, " +
                                 "d.accumulatedRecharges = :accumulatedRecharges, " +
+                                "d.lastRecharge = CURRENT_DATE, " +
                                 "d.updatedAt = CURRENT_TIMESTAMP " +
                                 "WHERE d.user.id = :userId"
                 )
-                .setParameter("currentBalance", current_balance)
-                .setParameter("accumulatedRecharges", accumulated_recharges)
+                .setParameter("currentBalance", currentBalance)
+                .setParameter("accumulatedRecharges", accumulatedRecharges)
                 .setParameter("userId", userId)
                 .executeUpdate();
     }

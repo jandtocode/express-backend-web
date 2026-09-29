@@ -1,9 +1,11 @@
 package com.jandtocode.express.controller;
 
 import com.jandtocode.express.dto.request.RechargeCardCalculateRequest;
+import com.jandtocode.express.dto.request.RechargeCardRequest;
 import com.jandtocode.express.dto.response.BalanceUserResponse;
 import com.jandtocode.express.dto.response.DashboardDefaultResponse;
 import com.jandtocode.express.dto.response.RechargeCardCalculateResponse;
+import com.jandtocode.express.dto.response.RechargeCardResponse;
 import com.jandtocode.express.service.DashboardService;
 import com.jandtocode.express.util.GeneralUtils;
 import jakarta.servlet.http.HttpSession;
@@ -48,26 +50,71 @@ public class DashboardController {
     }
 
     @PostMapping("/dashboard/recharge/calculate")
-    public ResponseEntity<RechargeCardCalculateResponse> calculateRecharge(HttpSession session,
-                                                                           @RequestBody RechargeCardCalculateRequest request) {
+    public ResponseEntity<RechargeCardCalculateResponse> calculateRecharge(
+            HttpSession session,
+            @RequestBody RechargeCardCalculateRequest request) {
 
         Integer userId = (Integer) session.getAttribute("userId");
 
         if (userId == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, GeneralUtils.MSG_ERR_DASHBOARD_DEFAULT);
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    GeneralUtils.MSG_ERR_DASHBOARD_DEFAULT
+            );
         }
 
-        RechargeCardCalculateResponse response = dashboardService.getInfoRechargeCardCalculate(
-                userId.longValue(),
-                request.getTypePayment(),
-                request.getBank(),
-                request.getName(),
-                request.getLastName(),
-                request.getValueRecharge()
-        );
+        RechargeCardCalculateResponse response =
+                dashboardService.CardCalculate(
+                        userId.longValue(),
+                        request.getTypePayment(),
+                        request.getBank(),
+                        request.getName(),
+                        request.getLastName(),
+                        request.getValueRecharge()
+                );
+
+        // Solo se guarda si calculate terminó correctamente
+        session.setAttribute("rechargeCalculated", true);
 
         return ResponseEntity.ok(response);
     }
 
+    @PatchMapping("/dashboard/recharge/final")
+    public ResponseEntity<RechargeCardResponse> updateInfoUserRecharge(
+            HttpSession session,
+            @RequestBody RechargeCardRequest request) {
+
+        Integer userId = (Integer) session.getAttribute("userId");
+
+        if (userId == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    GeneralUtils.MSG_ERR_DASHBOARD_DEFAULT
+            );
+        }
+
+        Boolean rechargeCalculated =
+                (Boolean) session.getAttribute("rechargeCalculated");
+
+        if (!Boolean.TRUE.equals(rechargeCalculated)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Primero debe ejecutar correctamente el servicio " +
+                            "/api/dashboard/recharge/calculate"
+            );
+        }
+
+        RechargeCardResponse response =
+                dashboardService.completeRecharge(
+                        userId.longValue(),
+                        request.getTotalTrips(),
+                        request.getTotalPayment(),
+                        request.getCurrentBalance()
+                );
+
+        session.removeAttribute("rechargeCalculated");
+
+        return ResponseEntity.ok(response);
+    }
 
 }
