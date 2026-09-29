@@ -17,13 +17,16 @@ public class RechargeCardCalculateResponse {
     private double valueRecharge;
     private boolean applyBonus;
     private double bonusValue;
+    private double totalRecharge;
+    private double totalToPay;
+
 
     public RechargeCardCalculateResponse(){}
 
     public RechargeCardCalculateResponse(Boolean success, String message, Integer userId, String typePayment,
                                          String bank, String name, String lastName, double currentBalance,
                                          int accumulatedRecharges, LocalDate lastRechargeDate, double valueRecharge,
-                                         boolean applyBonus, double bonusValue) {
+                                         double totalRecharge, double totalToPay, boolean applyBonus, double bonusValue) {
         this.success = success;
         this.message = message;
         this.userId = userId;
@@ -37,6 +40,8 @@ public class RechargeCardCalculateResponse {
         this.valueRecharge = valueRecharge;
         this.applyBonus = applyBonus;
         this.bonusValue = bonusValue;
+        this.totalRecharge = totalRecharge;
+        this.totalToPay = totalToPay;
     }
 
     public Boolean getSuccess() {
@@ -141,5 +146,21 @@ public class RechargeCardCalculateResponse {
 
     public void setBonusValue(double bonusValue) {
         this.bonusValue = bonusValue;
+    }
+
+    public double getTotalRecharge() {
+        return totalRecharge;
+    }
+
+    public void setTotalRecharge(double totalRecharge) {
+        this.totalRecharge = totalRecharge;
+    }
+
+    public double getTotalToPay() {
+        return totalToPay;
+    }
+
+    public void setTotalToPay(double totalToPay) {
+        this.totalToPay = totalToPay;
     }
 }

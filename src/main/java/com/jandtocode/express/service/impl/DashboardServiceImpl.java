@@ -139,6 +139,8 @@ public class DashboardServiceImpl implements DashboardService {
 
         System.out.println("Bonus 2: " + bonusValue + bonusApplied);
 
+        double totalToPay = valueRecharge + bonusValue;
+
         // Actualizar la información del usuario en el dashboard
         rechargeCardRepository.updateUserInfoDashboard(
                 userId.intValue(),
@@ -161,6 +163,8 @@ public class DashboardServiceImpl implements DashboardService {
                 (Integer) userInfo.get("accumulatedRecharges"),
                 (LocalDate) userInfo.get("lastRecharge"),
                 valueRecharge,
+                valueRecharge,
+                totalToPay,
                 bonusApplied,
                 bonusValue
         );
