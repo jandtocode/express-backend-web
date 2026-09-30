@@ -1,17 +1,36 @@
 package com.jandtocode.express.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Datos para calcular una recarga. El usuario se toma de la sesión, no se envía.")
 public class RechargeCardCalculateRequest {
-    private Long userId;
+
+    @Schema(description = "Tipo de pago.",
+            allowableValues = {"Efectivo", "Tarjeta"},
+            example = "Tarjeta",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String typePayment;
+
+    @Schema(description = "Banco. Es obligatorio siempre, sin importar el tipo de pago.",
+            allowableValues = {"PiggyBank Pop", "Banco Monedita", "PixelFinance", "CofreFeliz Bank", "CashCoon Bank"},
+            example = "PiggyBank Pop",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String bank;
+
+    @Schema(description = "Nombre del titular. El backend no lo valida.", example = "Juan")
     private String name;
+
+    @Schema(description = "Apellido del titular. El backend no lo valida.", example = "Pérez")
     private String lastName;
+
+    @Schema(description = "Valor a recargar. En la primera recarga debe estar entre 1000 y 10000.",
+            example = "2000.0",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Double valueRecharge;
 
     public RechargeCardCalculateRequest () {}
 
-    public RechargeCardCalculateRequest(Long userId, String typePayment, String bank, String name, String lastName, Double valueRecharge) {
-        this.userId = userId;
+    public RechargeCardCalculateRequest(String typePayment, String bank, String name, String lastName, Double valueRecharge) {
         this.typePayment = typePayment;
         this.bank = bank;
         this.name = name;
@@ -19,13 +38,6 @@ public class RechargeCardCalculateRequest {
         this.valueRecharge = valueRecharge;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public String getTypePayment() {
         return typePayment;

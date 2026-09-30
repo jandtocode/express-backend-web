@@ -1,11 +1,26 @@
 package com.jandtocode.express.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Resultado de la recarga finalizada.")
 public class RechargeCardResponse {
+
+    @Schema(description = "Indica si la recarga fue exitosa.", example = "true")
     private Boolean success;
+
+    @Schema(description = "Mensaje del resultado.", example = "Recarga realizada correctamente")
     private String message;
+
+    @Schema(description = "Saldo nuevo: saldo anterior + recarga + bono.", example = "2400.0")
     private Double currentBalance;
+
+    @Schema(description = "Fecha de la recarga (fecha de hoy), formato yyyy-MM-dd.", example = "2026-09-30")
     private String lastRecharge;
+
+    @Schema(description = "Total de recargas acumuladas, incluida esta.", example = "1")
     private Integer accumulateRecharges;
+
+    @Schema(description = "Indica si la recarga incluyó bono.", example = "true")
     private boolean applyBonus;
 
     public RechargeCardResponse(){}

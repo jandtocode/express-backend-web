@@ -1,23 +1,57 @@
 package com.jandtocode.express.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDate;
 
+@Schema(description = "Resultado del cálculo de la recarga.")
 public class RechargeCardCalculateResponse {
 
+    @Schema(description = "Indica si el cálculo fue exitoso.", example = "true")
     private Boolean success;
+
+    @Schema(description = "Mensaje del resultado.", example = "Cálculo de recarga exitoso")
     private String message;
+
+    @Schema(description = "Id del usuario en sesión.", example = "1")
     private Integer userId;
+
+    @Schema(description = "Tipo de pago enviado.", example = "Tarjeta")
     private String typePayment;
+
+    @Schema(description = "Banco enviado.", example = "PiggyBank Pop")
     private String bank;
+
+    @Schema(description = "Nombre del usuario registrado.", example = "Juan")
     private String name;
+
+    @Schema(description = "Apellido del usuario registrado.", example = "Pérez")
     private String lastName;
+
+    @Schema(description = "Saldo actual antes de la recarga.", example = "0.0")
     private double currentBalance;
+
+    @Schema(description = "Recargas realizadas hasta ahora. 0 indica usuario nuevo.", example = "0")
     private int accumulatedRecharges;
+
+    @Schema(description = "Fecha de la última recarga. 1900-01-01 indica que nunca ha recargado.",
+            example = "1900-01-01")
     private LocalDate lastRechargeDate;
+
+    @Schema(description = "Valor a recargar enviado.", example = "2000.0")
     private double valueRecharge;
+
+    @Schema(description = "Indica si se aplicó bono.", example = "true")
     private boolean applyBonus;
+
+    @Schema(description = "Valor del bono. 0 si no se aplicó.", example = "400.0")
     private double bonusValue;
+
+    @Schema(description = "Valor de la recarga sin bono. Hoy devuelve el mismo valor que valueRecharge.",
+            example = "2000.0")
     private double totalRecharge;
+
+    @Schema(description = "Total final: valueRecharge + bonusValue.", example = "2400.0")
     private double totalToPay;
 
 

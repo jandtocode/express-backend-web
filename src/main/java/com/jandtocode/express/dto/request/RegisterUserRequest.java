@@ -1,11 +1,33 @@
 package com.jandtocode.express.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Datos para registrar un usuario nuevo. Todos los campos son obligatorios.")
 public class RegisterUserRequest {
 
+    @Schema(description = "Nombre del usuario.",
+            example = "Jandtocode",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
+
+    @Schema(description = "Apellido del usuario.",
+            example = "Doe",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String lastName;
+
+    @Schema(description = "Identificación del usuario. Debe ser única: si ya existe, responde 409.",
+            example = "1234567890",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String identification;
+
+    @Schema(description = "Contraseña del usuario.",
+            example = "Clave123",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String password;
+
+    @Schema(description = "Confirmación de la contraseña. Debe ser igual a password, si no responde 400.",
+            example = "Clave123",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String confirmPassword;
 
     public RegisterUserRequest() {
